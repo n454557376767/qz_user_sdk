@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qz_user_sdk"
+version = "0.0.1"
+authors = [{ name="Orion", email="a114514_jj@qq.com" }]
+description = "轻昼sdk"
+readme = "README.md"  # 建议添加
+license = { text = "MIT" }  # 建议添加
+requires-python = ">=3.7"  # 建议添加
+dependencies = [
+  "httpx>=0.24.0"
+]
