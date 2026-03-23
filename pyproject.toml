@@ -13,3 +13,8 @@ requires-python = ">=3.7"  # 建议添加
 dependencies = [
   "httpx>=0.24.0"
 ]
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,8 +1,8 @@
-import requests
+import httpx
 import json
 class Post:
     def __init__(self,token = ""):
-        self.base_url = "https://hehenya.dpdns.org:8503"
+        self.base_url = "https://hehenya.dpdns.org:8505"
         self.token = token        
         self.headers = {
             "Accept-Language": "zh-cn,zh;q=0.5",
@@ -13,10 +13,8 @@ class Post:
             "Accept-Encoding": "gzip"
         }
 
-    def send_message(self, title, content, category_id, message_type=None, is_markdown=None):
-        if not config.token:
-            return "请先设置token"
-        
+    def send_message(self, content, category_id, message_type=None, is_markdown=None,title=None):
+
         url = f"{self.base_url}/post_message"
         data = {
             "category_id": category_id,
@@ -30,7 +28,7 @@ class Post:
         if title:
             data["title"] = title    
         try:
-            response = requests.post(url, headers=self.headers, data=json.dumps(data))
+            response = httpx.post(url, headers=self.headers, data=json.dumps(data))
             return response.json()
         except Exception as e:
             return f"请求出错: {str(e)}"
@@ -41,7 +39,7 @@ class Post:
         data = {"message_id": message_id}
         
         try:
-            response = requests.post(url, headers=self.headers, data=json.dumps(data))
+            response = httpx.post(url, headers=self.headers, data=json.dumps(data))
             return response.json()
         except Exception as e:
             return str(e)
@@ -50,9 +48,9 @@ class Post:
         url = f"{self.base_url}/v3/get_message?category_id={category_id}&page={page}&per_page={per_page}"
         
         try:
-            response = requests.get(url, headers=self.headers)
+            response = httpx.get(url, headers=self.headers)
             return response.json()
-        except requests.RequestException as e:
+        except httpx.RequestException as e:
             return f"请求出错: {str(e)}"
             
     def reply_to_message(self, content, category_id, referenced_message_id):
@@ -65,7 +63,7 @@ class Post:
         }
         
         try:
-            response = requests.post(url, headers=self.headers, data=json.dumps(data))
+            response = httpx.post(url, headers=self.headers, data=json.dumps(data))
             return response.json()
         except Exception as e:
             return f"请求出错: {str(e)}"

@@ -1,7 +1,5 @@
-# core/__init__.py
-import os
+import importlib
 from pathlib import Path
-from .lazy import LazyLoader
 
 # 自动发现所有.py文件（排除__init__.py）
 module_files = [
@@ -9,8 +7,13 @@ module_files = [
     if f.is_file() and f.stem != "__init__"
 ]
 
-# 动态创建模块访问入口
+# 动态导入模块
 for module_name in module_files:
-    globals()[module_name] = LazyLoader(f"sdk.core.{module_name}")
+    try:
+        # 使用相对导入
+        module = importlib.import_module(f".{module_name}", package=__package__)
+        globals()[module_name] = module
+    except ImportError:
+        pass
 
-__all__ = list(module_files)  # 暴露所有模块
+__all__ = list(module_files)
